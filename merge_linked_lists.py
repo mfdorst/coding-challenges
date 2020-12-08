@@ -8,11 +8,15 @@ class Link:
 
 
 def mergeLinkedLists(list_a, list_b):
+    return merge_linked_lists(list_a, list_b)
+
+
+def merge_linked_lists(list_a, list_b):
     if not list_a:
         return list_b
     if not list_b:
         return list_a
-    
+
     result = list_a if list_a.value < list_b.value else list_b
 
     while list_a and list_b:
