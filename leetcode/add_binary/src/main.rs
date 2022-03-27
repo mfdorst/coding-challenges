@@ -31,9 +31,9 @@ impl Solution {
         let mut carry: u8 = 0;
         let mut sum = vec!['0'; a.len()];
         loop {
-            if let Some(b_bit) = b_it.next() {
-                // Safe because we know that a is at least as long as b.
-                let (i, a_bit) = a_it.next().unwrap();
+            if let Some((i, a_bit)) = a_it.next() {
+                let b_bit = b_it.next().unwrap_or(&0);
+
                 match a_bit + b_bit + carry {
                     1 => {
                         sum[i] = '1';
@@ -48,24 +48,10 @@ impl Solution {
                     _ => {}
                 }
             } else {
-                if let Some((i, a_bit)) = a_it.next() {
-                    match a_bit + carry {
-                        1 => {
-                            sum[i] = '1';
-                            carry = 0;
-                        }
-                        2 => {
-                            sum[i] = '0';
-                            carry = 1;
-                        }
-                        _ => {}
-                    }
-                } else {
-                    if carry == 1 {
-                        sum.insert(0, '1');
-                    }
-                    break sum.iter().collect();
+                if carry == 1 {
+                    sum.insert(0, '1');
                 }
+                break sum.iter().collect();
             }
         }
     }
