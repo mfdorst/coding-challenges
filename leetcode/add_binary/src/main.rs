@@ -26,34 +26,29 @@ impl Solution {
         let b: Vec<u8> = b.chars().map(|c| if c == '0' { 0 } else { 1 }).collect();
         // Ensure a is at least as long as b. If not, swap them.
         let (a, b) = if a.len() > b.len() { (a, b) } else { (b, a) };
-        let mut a_it = a.iter().enumerate().rev();
-        let mut b_it = b.iter().rev();
-        let mut carry: u8 = 0;
+        let mut b = b.iter().rev();
+        let mut c: u8 = 0;
         let mut sum = vec!['0'; a.len()];
-        loop {
-            if let Some((i, a_bit)) = a_it.next() {
-                let b_bit = b_it.next().unwrap_or(&0);
-
-                match a_bit + b_bit + carry {
-                    1 => {
-                        sum[i] = '1';
-                        carry = 0;
-                    }
-                    2 => carry = 1,
-
-                    3 => {
-                        sum[i] = '1';
-                        carry = 1;
-                    }
-                    _ => {}
+        for (i, a) in a.iter().enumerate().rev() {
+            let b = b.next().unwrap_or(&0);
+            match a + b + c {
+                1 => {
+                    sum[i] = '1';
+                    c = 0;
                 }
-            } else {
-                if carry == 1 {
-                    sum.insert(0, '1');
+                2 => c = 1,
+
+                3 => {
+                    sum[i] = '1';
+                    c = 1;
                 }
-                break sum.iter().collect();
+                _ => {}
             }
         }
+        if c == 1 {
+            sum.insert(0, '1');
+        }
+        sum.iter().collect()
     }
 }
 
